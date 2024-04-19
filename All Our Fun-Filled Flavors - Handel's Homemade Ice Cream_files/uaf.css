@@ -1,0 +1,55 @@
+				@font-face {
+					font-family: 'bran';
+					src: url('/handels/wp-content/uploads/useanyfont/7361Bran.woff2') format('woff2'),
+						url('/handels/wp-content/uploads/useanyfont/7361Bran.woff') format('woff');
+					  font-display: auto;
+				}
+
+				.bran{font-family: 'bran' !important;}
+
+						@font-face {
+					font-family: 'raiders';
+					src: url('/handels/wp-content/uploads/useanyfont/3415Raiders.woff2') format('woff2'),
+						url('/handels/wp-content/uploads/useanyfont/3415Raiders.woff') format('woff');
+					  font-display: auto;
+				}
+
+				.raiders{font-family: 'raiders' !important;}
+
+						@font-face {
+					font-family: 'beauty';
+					src: url('/handels/wp-content/uploads/useanyfont/8771Beauty.woff2') format('woff2'),
+						url('/handels/wp-content/uploads/useanyfont/8771Beauty.woff') format('woff');
+					  font-display: auto;
+				}
+
+				.beauty{font-family: 'beauty' !important;}
+
+						@font-face {
+					font-family: 'futura';
+					src: url('/handels/wp-content/uploads/useanyfont/7951Futura.woff2') format('woff2'),
+						url('/handels/wp-content/uploads/useanyfont/7951Futura.woff') format('woff');
+					font-weight: 400; font-style: normal; font-display: auto;
+				}
+
+				.futura{font-family: 'futura' !important;}
+
+						@font-face {
+					font-family: 'futura';
+					src: url('/handels/wp-content/uploads/useanyfont/5524Futura.woff2') format('woff2'),
+						url('/handels/wp-content/uploads/useanyfont/5524Futura.woff') format('woff');
+					font-weight: 500; font-style: normal; font-display: auto;
+				}
+
+				.futura{font-family: 'futura' !important;}
+
+						@font-face {
+					font-family: 'futura';
+					src: url('/handels/wp-content/uploads/useanyfont/3070Futura.woff2') format('woff2'),
+						url('/handels/wp-content/uploads/useanyfont/3070Futura.woff') format('woff');
+					font-weight: 700; font-style: normal; font-display: auto;
+				}
+
+				.futura{font-family: 'futura' !important;}
+
+		

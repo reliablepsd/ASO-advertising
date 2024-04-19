@@ -1,0 +1,67 @@
+var activeInfoWindow;(function($){var tabButtons=$('.hndls-storelocator-tab-bar button');var accordionButtons=$('.accordion-controls li button');var MarkerType={BRANCH:'BRANCH',USER:'USER'};var locatorMap=null;var debug=!1;var geocoder=null;var storeCount=0;var dateObj=new Date()
+var weekday=dateObj.toLocaleString("default",{weekday:"long"}).toLowerCase();var branchMarkerIcon={url:'/wp-content/plugins/handels-core-functionality/assets/icons/icon-cherry.svg',scaledSize:new google.maps.Size(30,30),};function accordionToggle(){$('.accordion-controls li button').on('click',function(e){$control=$(this);accordionContent=$control.attr('aria-controls');isAriaExp=$control.attr('aria-expanded');newAriaExp=(isAriaExp=="false")?"true":"false";$control.attr('aria-expanded',newAriaExp);isAriaHid=$('#'+accordionContent).attr('aria-hidden');if(isAriaHid=="true"){$('#'+accordionContent).attr('aria-hidden',"false");$('#'+accordionContent).css('display','block')}else{$('#'+accordionContent).attr('aria-hidden',"true");$('#'+accordionContent).css('display','none')}})};function findOtherTabs(elem){for(var i=0;i<tabButtons.length;i++){if(tabButtons[i]!=elem){if(($(tabButtons[i]).attr('aria-selected'))=='true'){$(tabButtons[i]).attr('aria-selected','false');content=$(tabButtons[i]).attr('aria-controls');$('#'+content).attr('hidden','true')}}}}
+function locatorTabToggle(){tabButtons.on('click',function(e){$control=$(this);tabContent=$control.attr('aria-controls');isAriaExp=$control.attr('aria-selected');if(isAriaExp!="true"){$control.attr('aria-selected','true');$('#'+tabContent).removeAttr('hidden');findOtherTabs($control[0])}else{}})}
+function toggleLocatorModal(){var locatorModal=$('.hndls-storelocator-modal');locatorModal.toggleClass('modal-open');google.maps.event.trigger(locatorMap,'resize');if(locatorModal.hasClass('modal-open')&&(locatorMap==null)){newMap($('#hndls-map'))}}
+$('.toggle-locator-modal, a[href="#open-locator"]').on('click',function(e){e.preventDefault();toggleLocatorModal()});function handleLocationError(browserHasGeolocation,infoWindow,pos){infoWindow.setPosition(pos);infoWindow.setContent(browserHasGeolocation?"Error: The Geolocation service failed.":"Error: Your browser doesn't support geolocation.");infoWindow.open(locatorMap)}
+accordionToggle();locatorTabToggle();function log(msg1,msg2){if(!debug){return}
+if(typeof msg2==='undefined'){console.log(msg1);return}
+console.log(msg1,msg2)}
+function sortByDistanceDistanceMatrix(a,b){return(a.custom_distance.distance-b.custom_distance.distance)}
+function sortByKeyDesc(array,key){return array.sort(function(a,b){var x=a[key];var y=b[key];return((x>y)?-1:((x<y)?1:0))})}
+function sortByKeyAsc(array,key){return array.sort(function(a,b){var x=a[key];var y=b[key];return((x<y)?-1:((x>y)?1:0))})}
+function showLoader(){$('#map-spinner').show()}
+function hideLoader(){$('#map-spinner').hide()}
+function showInfo(msg,className){var $infoElement=$('#map-info');hideLoader();$infoElement.html(msg);if(className){$infoElement.removeClass().addClass(className)}}
+function clearInfo(){hideLoader();$('#map-info').removeClass().html('');$('#hndls-storelocator-search-results').html('')}
+function isBranchMarker(marker){return marker.custom_type===MarkerType.BRANCH}
+function getBranchMarkers(){var markers=[];$.each(map.markers,function(i,marker){if(isBranchMarker(marker)){markers.push(marker)}});return markers}
+function addWindowInfo(marker,content){var infowindow=new google.maps.InfoWindow({content:content});google.maps.event.addListener(marker,'click',function(){if(activeInfoWindow){activeInfoWindow.close()}
+infowindow.open(locatorMap,marker);activeInfoWindow=infowindow})}
+function getUserMarker(){var userMarker=null;$.each(locatorMap.markers,function(i,marker){if(marker.custom_type===MarkerType.USER){userMarker=marker}});return userMarker}
+function addUserMarker(location){var userMarker=getUserMarker();if(null===userMarker){var marker=new google.maps.Marker({position:location,map:locatorMap,title:'Your Position',custom_type:MarkerType.USER});locatorMap.markers.push(marker);addWindowInfo(marker,'<b>Your position</b>')}else{userMarker.setPosition(location);userMarker.setMap(locatorMap)}}
+function focusMapOnMarkers(markers){var userMarker=getUserMarker();var noResults=!1;if(null!==userMarker){markers.push(userMarker)}
+if(markers.length===1){locatorMap.setCenter(markers[0].getPosition());locatorMap.setZoom(10)}else{var latlng=null;var focusedOn=markers.map(function(el){return el.custom_branch_id});var bounds=new google.maps.LatLngBounds();$.each(locatorMap.markers,function(i,marker){if(focusedOn.length<1){log('show all');latlng=new google.maps.LatLng(marker.position.lat(),marker.position.lng());bounds.extend(latlng)}else{log('show chosen with user marker');if(focusedOn.indexOf(marker.custom_branch_id)>-1||marker.custom_type===MarkerType.USER){latlng=new google.maps.LatLng(marker.position.lat(),marker.position.lng());bounds.extend(latlng)}}});locatorMap.fitBounds(bounds)}}
+function showAllBranchMarkers(){var bounds=new google.maps.LatLngBounds();$.each(map.markers,function(i,marker){if(marker.custom_type===MarkerType.USER){marker.setMap(null)}else{latlng=new google.maps.LatLng(marker.position.lat(),marker.position.lng());bounds.extend(latlng)}});map.fitBounds(bounds)}
+function addBranchMarker(branchId){var branch=branches[branchId];var latlng=new google.maps.LatLng(branch.lat,branch.lng);if(branch.lat!=''&&branch.lng!=''){var marker=new google.maps.Marker({position:latlng,map:locatorMap,title:branch.title,address:branch.address,icon:branchMarkerIcon,custom_type:MarkerType.BRANCH,custom_branch_id:branch.id,marker_num:storeCount,});locatorMap.markers.push(marker);var content='';if('soon'===branch.status){content+='<span class="d-block mb-2"><em>Opening Soon</em></span>'}
+if('yes'===branch.now_open&&'open'===branch.status){content+='<span class="d-block mb-2"><em>Now Open</em></span>'}
+content+='<p class="mb-2"><b>'+branch.title+'</b><br>';content+=branch.address+'</p>';content+='<a href="'+branch.link+'" class="fancy-link ifw-link">Store Details</a>';google.maps.event.addListener(marker,'click',(function(marker,i){return function(){$('.store-info--map-view').removeClass('selected');$('#store-'+branch.id).addClass('selected')}})(marker));$('#store-'+branch.id).attr('data-marker','branchCount');addWindowInfo(marker,content);storeCount++}}
+function showBigMap(){focusMapOnMarkers([])}
+function calculateDistances(point,address){addUserMarker(point);var markersToShow=[];var coordinates=locatorMap.markers.map(function(el){return{lat:el.getPosition().lat(),lng:el.getPosition().lng(),type:el.custom_type}});var point=coordinates.slice(-1).pop()
+var point_lat=point["lat"];var point_lng=point["lng"];var maxDistance=25;for(var i=0;i<coordinates.length;i++){var lat1=point_lat;var lat2=coordinates[i].lat;var lon1=point_lng;var lon2=coordinates[i].lng;var radlat1=Math.PI*lat1/180;var radlat2=Math.PI*lat2/180;var theta=lon1-lon2;var radtheta=Math.PI*theta/180;var dist=Math.sin(radlat1)*Math.sin(radlat2)+Math.cos(radlat1)*Math.cos(radlat2)*Math.cos(radtheta);if(dist>1){dist=1}
+dist=Math.acos(dist);dist=dist*180/Math.PI;dist=dist*60*1.1515;dist=dist*0.8684;if(dist>maxDistance){locatorMap.markers[i].custom_distance=null;continue}
+locatorMap.markers[i].custom_distance={distance:dist,duration:null,status:null};if(locatorMap.markers[i].type!='USER'){markersToShow.push(locatorMap.markers[i])}}
+markersToShow.sort(sortByDistanceDistanceMatrix);markersToShow=sortByKeyAsc(markersToShow,'distance');if(markersToShow.length<=1){errorMsg='There is no branch close to the given distance.';log(errorMsg);showInfo(errorMsg,"alert-warning");focusMapOnMarkers([]);$('#hndls-storelocator-search-results').html(`
+    <div class="store-info store-info--map-view">
+        <div class="px-3">
+          <h4>0 Stores Found</h4>
+          <div class="address mb-2">Unfortunately there are no stores near you yet.</div>
+      </div>
+    `);return}
+$.each(markersToShow,function(key,value){if(value.custom_type=='BRANCH'){var branch_id=value.custom_branch_id
+var branch_json_info=branches[branch_id];var calculated_distance=Math.round(value.custom_distance.distance*10)/10;var hours='';var online_order='';var online_delivery='';var store_status='';if(branch_json_info.order_link){online_order=`<div><a href="${branch_json_info['order_link']}" target="_blank" rel="noopener" class="button button--red d-block mt-3 map-view-order-pickup">Order Pickup</a></div>`}
+if(branch_json_info.dd_link){online_delivery=`<div><a href="${branch_json_info['dd_link']}" target="_blank" rel="noopener" class="button button--red d-block mt-3 map-view-order-delivery">Order Delivery</a></div>`}
+if(branch_json_info[weekday]){hours=`<b>Today's Hours: ${branch_json_info[ weekday ]}</b>`}
+if(branch_json_info.status==="soon"){store_status=' <span>Opening Soon</span>'}
+if('yes'===branch_json_info.now_open&&'open'===branch_json_info.status){store_status=' <span>Now Open</span>'}
+$('#hndls-storelocator-search-results').append(`<div class="store-info store-info--map-view" data-store-id="${branch_id}" data-marker="${value['marker_num']}" id="store-${branch_id}">
+            <div class="px-3">
+              <h4>${value['title']}${store_status}</h4>
+              <div class="address mb-2">${value['address']}</div>
+              <div class="distance mb-4">${calculated_distance} miles away</div>
+              <div class="store-info-links mb-4">
+                <a href="${branch_json_info['directions']}" target="_blank"r el="noopener">Get Directions <svg xmlns="http://www.w3.org/2000/svg" overflow="visible" viewBox="0 0 90 50.9"><path d="M45 36.7l35-35c2.3-2.3 6-2.3 8.3 0s2.3 6 0 8.3L49.2 49.2c-1.1 1.1-2.6 1.7-4.2 1.7s-3-.6-4.2-1.7L1.7 10c-2.3-2.3-2.3-6 0-8.3s6-2.3 8.3 0l35 35z" fill="#000000"></path></svg></a>
+                <a href="${branch_json_info['link']}">Store Details <svg xmlns="http://www.w3.org/2000/svg" overflow="visible" viewBox="0 0 90 50.9"><path d="M45 36.7l35-35c2.3-2.3 6-2.3 8.3 0s2.3 6 0 8.3L49.2 49.2c-1.1 1.1-2.6 1.7-4.2 1.7s-3-.6-4.2-1.7L1.7 10c-2.3-2.3-2.3-6 0-8.3s6-2.3 8.3 0l35 35z" fill="#000000"></path></svg></a>
+              </div>
+              <div class="store-hours">${hours}</div>
+              ${online_order}
+              ${online_delivery}
+            </div>
+          </div>`)}});focusMapOnMarkers(markersToShow)}
+function codeGeolocation(){clearInfo();showLoader();showBigMap();if(navigator.geolocation){navigator.geolocation.getCurrentPosition(function(position){var pos=new google.maps.LatLng(position.coords.latitude,position.coords.longitude);calculateDistances(pos)},function(){var pos=new google.maps.LatLng(40.798946,-81.378448);calculateDistances(pos);var errorMsg='Error: The Geolocation service failed.';log(errorMsg);showInfo(errorMsg,"error-info")})}else{var pos=new google.maps.LatLng(40.798946,-81.378448);calculateDistances(pos);var errorMsg='Error: your browser doesn\'t support Geolocation.';log(errorMsg);showInfo(errorMsg,"error-info")}}
+function codeAddress(){clearInfo();showBigMap();var address=document.getElementById('address-search').value;if(''===address){focusMapOnMarkers([]);hideLoader()}else{geocoder.geocode({'address':address},function(results,status){if(status===google.maps.GeocoderStatus.OK){calculateDistances(results[0].geometry.location,address)}else{var errorMsg='Geocode was not successful for the following reason: '+status;log(errorMsg);showInfo(errorMsg,"error-info")}})}}
+function newMap($el){geocoder=new google.maps.Geocoder();args={zoom:16,center:new google.maps.LatLng(41.0998,-80.6495),mapTypeId:google.maps.MapTypeId.ROADMAP,markers:[]};locatorMap=new google.maps.Map($el[0],args);if(navigator.geolocation){navigator.geolocation.getCurrentPosition((position)=>{const pos={lat:position.coords.latitude,lng:position.coords.longitude,};console.log('')
+locatorMap.setCenter(pos);handleLocationError(pos)},()=>{pos=new google.maps.LatLng(41.0998,-80.6495);handleLocationError(pos)})}else{pos=new google.maps.LatLng(41.0998,-80.6495);handleLocationError(pos)}}
+function handleLocationError(pos){for(var branchId in branches){addBranchMarker(branchId)}
+calculateDistances(pos);focusMapOnMarkers([])}
+function focusOnPin(pin){google.maps.event.trigger(locatorMap.markers[pin],'click')}
+$('#address-search').on('keydown',function(e){if(e.which===13){clearInfo();codeAddress()}});$('#search-btn').on('click',function(){clearInfo();codeAddress()});$('#reset-search-btn').on('click',function(){clearInfo();showAllBranchMarkers()});$(document).on('click','.store-info--map-view',function(){var pinID=$(this).data('marker');focusOnPin(pinID)});jQuery(document).on('nfFormReady',function(e,layoutView){$('.nf-group_by_state').each(function(i,el){const $cont=$(el);$cont.find('option').each(function(index,element){var addrString=$(element).text();var addrStringArray=addrString.split(', ');var stateZip=addrStringArray[addrStringArray.length-1];var stateZipArray=stateZip.split(' ');var state=stateZipArray[0];if($cont.find('optgroup[label='+state+']').length>0){$('optgroup[label='+state+']').append(element)}else{$('<optgroup/>').attr('label',state).appendTo($cont);$('optgroup[label='+state+']').append(element)}})})})})(jQuery)

@@ -1,0 +1,1 @@
+jQuery(".accordion-block").on("click",(function(c){jQuery(this).addClass("active").siblings().removeClass("active")}));
