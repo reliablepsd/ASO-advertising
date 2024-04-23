@@ -161,6 +161,7 @@
 		color: #fff !important;
 		font-size: 15px;
 		line-height: 21px;
+
 		&:last-child {
 			margin-bottom: 0;
 		}
@@ -191,13 +192,14 @@
 	grid-gap: 20px 40px;
 	align-items: center;
 	justify-content: center;
+
 	a {
 		font-family: 'Futura Std Extra Bold', sans-serif;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #2C3691;
-    padding-bottom: 3px;
-    cursor: pointer;
+		font-weight: 900;
+		text-transform: uppercase;
+		color: #2C3691;
+		padding-bottom: 3px;
+		cursor: pointer;
 	}
 
 }
@@ -206,21 +208,20 @@
 	html #ice-cream-container {
 		margin-bottom: 0;
 	}
+
 	.flavor-new-item {
 		&._headline {
-		grid-column: span 1;
-		grid-row: span 1;
-		margin-right: -55px;
+			grid-column: span 1;
+			grid-row: span 1;
+			margin-right: -55px;
+		}
 	}
-	&:nth-of-type(n+6) {
-		display: none;
-	}
-	}
+
 	.btn-on-mob {
 		.flavor-new-item {
-		&:nth-of-type(n+32) {
-			display: none;
-		}
+			&:nth-of-type(n+30) {
+				display: none;
+			}
 		}
 	}
 
@@ -232,10 +233,12 @@
 	.flavor-row-new {
 		grid-template-columns: repeat(3, 1fr);
 		grid-gap: 20px;
+
 		&.btn-on-mob {
 			padding-bottom: 60px;
 		}
 	}
+
 	.flavor-btns {
 		display: flex;
 	}
