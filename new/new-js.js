@@ -17,7 +17,11 @@ function isElementExist(_el, _cb) {
 }
 
 function btnMore() {
+  // add class for block with headline article
+  jQuery(".flavor-new-item._headline").closest(".flavor-row-new").addClass("_have-headline");
+
   jQuery(".flavor-row-new").each(function (index, element) {
+    jQuery(".flavor-row-new")
     const startElement = 32;
     const amountElement = 18;
     const $this = jQuery(this);

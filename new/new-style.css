@@ -23,6 +23,54 @@
   grid-gap: 5px 20px;
   grid-template-columns: repeat(6, 1fr);
 }
+.flavor-row-new._have-headline .flavor-new-item:nth-of-type(1), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(3), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(6), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+9), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+11), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+13), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+18) {
+  -webkit-transform: rotate(2deg);
+          transform: rotate(2deg);
+}
+.flavor-row-new._have-headline .flavor-new-item:nth-of-type(2), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(4), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(7), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+10), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+12), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+14), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+15), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+19) {
+  -webkit-transform: rotate(-1deg);
+          transform: rotate(-1deg);
+}
+.flavor-row-new._have-headline .flavor-new-item:nth-of-type(5), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+17) {
+  -webkit-transform: rotate(-2deg);
+          transform: rotate(-2deg);
+}
+.flavor-row-new._have-headline .flavor-new-item:nth-of-type(8), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+11) {
+  -webkit-transform: rotate(1deg);
+          transform: rotate(1deg);
+}
+@media (min-width: 1251px) {
+  .flavor-row-new._have-headline .flavor-new-item:nth-of-type(2), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(6), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+10), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+13), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+16), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+18) {
+    margin-top: 15px;
+  }
+  .flavor-row-new._have-headline .flavor-new-item:nth-of-type(1), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(3), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(5), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(7), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+11), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+12), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+17), .flavor-row-new._have-headline .flavor-new-item:nth-of-type(12n+19) {
+    margin-top: 25px;
+  }
+}
+.flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+1), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+3), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+5), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+10) {
+  -webkit-transform: rotate(2deg);
+          transform: rotate(2deg);
+}
+.flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+2), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+4), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+6), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+7), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+11) {
+  -webkit-transform: rotate(-1deg);
+          transform: rotate(-1deg);
+}
+.flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+9) {
+  -webkit-transform: rotate(-2deg);
+          transform: rotate(-2deg);
+}
+.flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+3) {
+  -webkit-transform: rotate(1deg);
+          transform: rotate(1deg);
+}
+@media (min-width: 1251px) {
+  .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+2), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+4), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+8), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+10) {
+    margin-top: 15px;
+  }
+  .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+3), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+5), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+9), .flavor-row-new:not([class*=_have-headline]) .flavor-new-item:nth-of-type(12n+11) {
+    margin-top: 25px;
+  }
+}
 
 .flavor-name-big {
   display: block;
@@ -65,30 +113,6 @@
 }
 .flavor-new-item:nth-of-type(even) .flavor-new-img {
   background-image: url("img/flavors-tree-background.jpg");
-}
-.flavor-new-item:nth-of-type(12n+1), .flavor-new-item:nth-of-type(12n+3), .flavor-new-item:nth-of-type(12n+5), .flavor-new-item:nth-of-type(12n+10) {
-  -webkit-transform: rotate(2deg);
-          transform: rotate(2deg);
-}
-.flavor-new-item:nth-of-type(12n+2), .flavor-new-item:nth-of-type(12n+4), .flavor-new-item:nth-of-type(12n+6), .flavor-new-item:nth-of-type(12n+7), .flavor-new-item:nth-of-type(12n+11) {
-  -webkit-transform: rotate(-1deg);
-          transform: rotate(-1deg);
-}
-.flavor-new-item:nth-of-type(12n+9) {
-  -webkit-transform: rotate(-2deg);
-          transform: rotate(-2deg);
-}
-.flavor-new-item:nth-of-type(12n+3) {
-  -webkit-transform: rotate(1deg);
-          transform: rotate(1deg);
-}
-@media (min-width: 1251px) {
-  .flavor-new-item:nth-of-type(12n+2), .flavor-new-item:nth-of-type(12n+4), .flavor-new-item:nth-of-type(12n+8), .flavor-new-item:nth-of-type(12n+10) {
-    margin-top: 15px;
-  }
-  .flavor-new-item:nth-of-type(12n+3), .flavor-new-item:nth-of-type(12n+5), .flavor-new-item:nth-of-type(12n+9), .flavor-new-item:nth-of-type(12n+11) {
-    margin-top: 25px;
-  }
 }
 
 .flavor-new-img {
@@ -213,7 +237,7 @@
   }
   .flavor-row-new {
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
+    grid-gap: 20px 3%;
   }
   .flavor-row-new.btn-on-mob {
     padding-bottom: 60px;
@@ -225,6 +249,9 @@
   }
 }
 @media (max-width: 900px) {
+  #ice-cream-container .flavor-row-new {
+    margin-top: -30px;
+  }
   .flavor-new-item._headline {
     grid-column: span 2;
     grid-row: span 2;
@@ -245,6 +272,9 @@
   }
 }
 @media (max-width: 640px) {
+  #ice-cream-container .flavor-row-new {
+    margin-top: -10px;
+  }
   .flavor-new-item._headline {
     max-width: calc(100% - 40px);
     padding: 7% 7% 0 7%;
