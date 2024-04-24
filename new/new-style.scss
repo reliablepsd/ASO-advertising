@@ -204,6 +204,12 @@
 
 }
 
+.flavor-all-visible {
+	.flavor-btn-more {
+		display: none;
+	}
+}
+
 @media (max-width: 1250px) {
 	html #ice-cream-container {
 		margin-bottom: 0;
