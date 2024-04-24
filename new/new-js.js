@@ -17,37 +17,29 @@ function isElementExist(_el, _cb) {
 }
 
 function btnMore() {
+  jQuery(".flavor-row-new").each(function (index, element) {
+    const startElement = 32;
+    const amountElement = 18;
+    const $this = jQuery(this);
+    const $flavorItems = $this.find(".flavor-new-item");
+    const amountFlavor = $flavorItems.length;
+    let i = 1;
 
-  jQuery(".flavor-row-new").each(function (index) {
-    let i = 1,
-      startElement = 32,
-      amountFlavor = jQuery(this).find(".flavor-new-item").length,
-      amountElement = 18;
+    if (amountFlavor > startElement + i * amountElement) {
+      $this.addClass("btn-on-mob").append('<div class="flavor-btns"><a href="#!" class="flavor-btn-more">LOAD MORE FLAVORS</a></div>');
 
-    if (amountFlavor > (startElement + i * amountElement)) {
-      jQuery(this).addClass("btn-on-mob").append('<div class="flavor-btns"><a href="#!" class="flavor-btn-more">LOAD MORE FLAVORS</a></div>')
+      $this.on("click", ".flavor-btn-more", function () {
+        const visibleElements = startElement + i * amountElement;
+        const styleString = `<style>@media (max-width: 1250px) {.btn-on-mob.flavor-${index} .flavor-new-item:nth-of-type(-n+${visibleElements}) { display: block; }}</style>`;
 
-      jQuery(this).on("click", ".flavor-btn-more", function () {
-        if ((startElement + i * amountElement) < amountFlavor) {
-          jQuery(this)
-            .closest(".flavor-row-new")
-            .addClass("flavor-" + index)
-            .find(jQuery("style"))
-            .remove()
-          jQuery(this)
-            .closest(".flavor-row-new")
-            .append(
-              "<style>@media (max-width: 1250px) {.btn-on-mob.flavor-" +
-                index +
-                " .flavor-new-item:nth-of-type(-n+" +
-                (startElement + i * amountElement) +
-                ") { display: block; }}</style>"
-            )
-          i += 1
+        if (visibleElements < amountFlavor) {
+          $this.addClass(`flavor-${index}`).find("style").remove().end().append(styleString);
+          i++;
         } else {
-          jQuery(this).closest(".flavor-row-new").addClass("flavor-all-visible")
+          $this.addClass(`flavor-${index}`).find("style").remove().end().append(styleString);
+          $this.addClass("flavor-all-visible");
         }
-      })
+      });
     }
-  })
+  });
 }
